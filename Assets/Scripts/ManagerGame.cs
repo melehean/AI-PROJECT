@@ -89,7 +89,10 @@ public class ManagerGame : MonoBehaviour
             action_ = -1;
             game_state_ = 1;
             won_text_.enabled = true;
-            prize_ = 100;
+	    lock(socket_controller_.send_data_lock_)
+	    {
+            	prize_ = 100;
+	    }
         }
 
         switch (action)
@@ -123,7 +126,10 @@ public class ManagerGame : MonoBehaviour
     public void DestroyBrick()
     {
         score_++;
-        prize_ = prize_ + 1;
+	lock(socket_controller_.send_data_lock_)
+	{
+        	prize_ = prize_ + 1;
+	}
         score_text_.text = "Score: " + score_;
        
     }
@@ -135,7 +141,10 @@ public class ManagerGame : MonoBehaviour
         lives_--;
         game_over_text_.enabled = true;
         game_state_ = -1;
-        prize_ = -brick_manager_.GetActiveBrickCount();
+	lock(socket_controller_.send_data_lock_)
+	{
+        	prize_ = -brick_manager_.GetActiveBrickCount();
+	}
     }
 
     private void OnDestroy()
